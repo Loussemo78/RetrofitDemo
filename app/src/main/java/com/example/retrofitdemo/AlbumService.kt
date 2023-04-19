@@ -10,5 +10,9 @@ interface AlbumService {
     @GET("/albums")
     suspend fun getAlbums(): Response<Albums>
 
+    @GET("/albums")
+    suspend fun getSortedAlbums(@Query("userId")userId:Int): Response<Albums>
+
+
 
 }
