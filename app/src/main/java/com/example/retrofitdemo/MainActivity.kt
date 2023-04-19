@@ -25,7 +25,10 @@ class MainActivity : AppCompatActivity() {
             .getRetrofitInstance()
             .create(AlbumService::class.java)
 
-        getRequestWithQueryParameters()
+        //getRequestWithQueryParameters()
+
+        uploadAlbums()
+
 
 
         val responseLivedata:LiveData<Response<Albums>> = liveData {
@@ -58,6 +61,22 @@ class MainActivity : AppCompatActivity() {
             val title = it.body()?.title
             Toast.makeText(applicationContext,title,Toast.LENGTH_LONG).show()
 
+        })
+    }
+
+    private fun uploadAlbums(){
+        val album = AlbumsItem(0,"My title",3)
+        val postResponse:LiveData<Response<AlbumsItem>> = liveData {
+            val response = retService.uploadAlbum(album)
+            emit(response)
+        }
+
+        postResponse.observe(this, Observer {
+            val receivedAlbumsItem = it.body()
+            val result = " "+"Album Title : ${receivedAlbumsItem?.title}"+"\n"+
+                    " "+"Album id : ${receivedAlbumsItem?.title}"+"\n"+
+                    " "+"User Id : ${receivedAlbumsItem?.userId}"+"\n\n\n"
+            binding.textView.text = result
         })
     }
 }
